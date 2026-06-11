@@ -1,0 +1,652 @@
+﻿/* Reset basico para evitar espacamentos inesperados. */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Variaveis de cores usadas em todo o visual do sistema. */
+:root {
+    --verde: #1f7a4d;
+    --verde-escuro: #155d3a;
+    --verde-claro: #e8f4ed;
+    --amarelo: #f4c542;
+    --azul: #2f80ed;
+    --vermelho: #d84343;
+    --texto: #24332b;
+    --muted: #607069;
+    --borda: #d7e3db;
+    --fundo: #edf4ef;
+    --branco: #ffffff;
+    --sombra: 0 18px 42px rgba(36, 51, 43, 0.14);
+}
+
+/* Estrutura geral da pagina. */
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--texto);
+    background:
+        linear-gradient(135deg, rgba(31, 122, 77, 0.13), rgba(255, 255, 255, 0.92)),
+        var(--fundo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+/* Container principal com apresentacao e formulario lado a lado. */
+.pagina {
+    width: min(100%, 940px);
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    background: var(--branco);
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+}
+
+/* Bloco verde usado como introducao do sistema. */
+.apresentacao {
+    background:
+        linear-gradient(180deg, rgba(31, 122, 77, 0.96), rgba(21, 93, 58, 0.96)),
+        var(--verde);
+    color: var(--branco);
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+}
+
+/* Pequeno selo acima do titulo. */
+.selo {
+    width: fit-content;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.58);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* Titulos principais. */
+h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+}
+
+.apresentacao p {
+    max-width: 34ch;
+    color: #e8f4ed;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Area branca onde ficam formulario ou resultado. */
+.formulario-area {
+    padding: 40px;
+}
+
+.formulario-area h2 {
+    color: var(--verde);
+    font-size: 1.55rem;
+    margin-bottom: 8px;
+}
+
+.descricao {
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 28px;
+}
+
+/* Grade do formulario. */
+form {
+    display: grid;
+    gap: 18px;
+}
+
+/* Grupo padrao de label + campo. */
+.grupo {
+    display: grid;
+    gap: 8px;
+}
+
+label {
+    font-weight: 700;
+    color: #314238;
+}
+
+/* Campos de texto, numero e selecao. */
+input,
+select {
+    width: 100%;
+    border: 1px solid #c8d7cf;
+    border-radius: 6px;
+    padding: 13px 14px;
+    font-size: 1rem;
+    color: var(--texto);
+    background: #fbfdfc;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Destaque visual quando o usuario esta digitando. */
+input:focus,
+select:focus {
+    border-color: var(--verde);
+    box-shadow: 0 0 0 4px rgba(31, 122, 77, 0.14);
+}
+
+/* Linha com dois campos lado a lado. */
+.linha {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+/* Painel exibido apenas para o tipo escolhido. */
+.painel-especifico {
+    border: 1px solid #c8d7cf;
+    border-radius: 8px;
+    padding: 16px;
+    background: #f6fbf8;
+}
+
+.painel-especifico legend {
+    padding: 0 8px;
+    color: var(--verde);
+    font-weight: 700;
+}
+
+/* Classe usada pelo JavaScript para esconder os paineis. */
+.painel-oculto {
+    display: none;
+}
+
+/* Area dos botoes. */
+.acoes {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+}
+
+/* Estilo base para botoes e links com aparencia de botao. */
+button,
+.link-botao {
+    border: 0;
+    border-radius: 6px;
+    padding: 13px 18px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+button:hover,
+.link-botao:hover {
+    transform: translateY(-1px);
+}
+
+/* Botao principal usado para calcular e voltar. */
+.botao-principal {
+    color: var(--branco);
+    background: var(--verde);
+    box-shadow: 0 10px 22px rgba(31, 122, 77, 0.2);
+}
+
+.botao-principal:hover {
+    background: var(--verde-escuro);
+}
+
+/* Botao secundario usado para limpar. */
+.botao-secundario {
+    color: var(--verde);
+    background: var(--verde-claro);
+}
+
+.botao-secundario:hover {
+    background: #d9ecdf;
+}
+
+/* Card simples usado para apresentar o resultado calculado. */
+.resultado-card {
+    display: grid;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 20px;
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    background: #fbfdfc;
+    line-height: 1.55;
+}
+
+/* Destaque para o valor final de venda. */
+.valor-final {
+    margin-top: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--borda);
+    color: var(--verde-escuro);
+    font-size: 1.25rem;
+}
+
+/* Aparencia do bloco de erro. */
+.erro-card {
+    border-color: rgba(216, 67, 67, 0.35);
+    background: #fff5f5;
+    color: #651f1f;
+}
+
+/* Personagem animada que aparece por cima da pagina. */
+.professora-wrapper {
+    position: fixed;
+    left: 16px;
+    top: 16px;
+    width: 136px;
+    height: 172px;
+    pointer-events: none;
+    transition: transform 2.8s ease-in-out;
+    z-index: 20;
+}
+
+/* Balao de fala da personagem. */
+.professora-speech {
+    position: absolute;
+    top: -18px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    padding: 12px 14px;
+    max-width: 220px;
+    background: var(--branco);
+    color: #122137;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.2;
+    border-radius: 8px;
+    border: 3px solid #122137;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+    z-index: 2;
+    transition: transform 0.25s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Pequena animacao quando o texto do balao muda. */
+.professora-speech.speech-pop {
+    transform: translateY(-6px);
+}
+
+/* Cor do balao quando existe erro no formulario. */
+.professora-speech.speech-alert {
+    background: #ffefef;
+    border-color: var(--vermelho);
+    color: #581c1c;
+}
+
+.professora-speech::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 24px;
+    border-width: 12px 10px 0 10px;
+    border-style: solid;
+    border-color: var(--branco) transparent transparent transparent;
+}
+
+/* Estrutura visual da professora usando imagem real. */
+.professora-sprite {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 136px;
+    z-index: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+/* Foto da professora: fica proporcional, com borda e sombra para destacar no fundo. */
+.professora-imagem {
+    width: 118px;
+    height: 118px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    border: 4px solid var(--branco);
+    background: var(--branco);
+    box-shadow: 0 14px 26px rgba(18, 33, 55, 0.22);
+    animation: professoraFloat 3.4s ease-in-out infinite;
+}
+
+/* Pequeno movimento da foto para parecer que ela esta flutuando. */
+@keyframes professoraFloat {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+/* Card de impacto ambiental exibido na tela de resultado. */
+.impacto-card {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+    padding: 18px;
+    border: 1px solid rgba(31, 122, 77, 0.28);
+    border-radius: 8px;
+    background: #f1fbf5;
+    color: var(--texto);
+    line-height: 1.55;
+}
+
+/* Etiqueta pequena usada para separar visualmente os blocos explicativos. */
+.card-etiqueta {
+    width: fit-content;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: var(--verde-claro);
+    color: var(--verde-escuro);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Painel flutuante que parece uma telinha de execucao do PHP. */
+.bastidores-flutuante {
+    position: fixed;
+    top: 50%;
+    right: 24px;
+    width: 360px;
+    min-width: 280px;
+    max-width: calc(100vw - 48px);
+    min-height: 360px;
+    max-height: 82vh;
+    resize: both;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #122137;
+    color: #eef7f2;
+    box-shadow: 0 22px 48px rgba(18, 33, 55, 0.28);
+    transform: translateY(-50%);
+    z-index: 18;
+}
+
+/* Destaque aplicado enquanto o painel esta sendo arrastado com o mouse. */
+.bastidores-flutuante.arrastando {
+    opacity: 0.96;
+    box-shadow: 0 28px 62px rgba(18, 33, 55, 0.38);
+}
+
+/* Barra superior da telinha, inspirada em uma janela de terminal. */
+.terminal-topo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 14px;
+    background: #07111f;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: grab;
+    user-select: none;
+}
+
+.bastidores-flutuante.arrastando .terminal-topo {
+    cursor: grabbing;
+}
+
+.terminal-topo span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d84343;
+}
+
+.terminal-topo span:nth-child(2) {
+    background: var(--amarelo);
+}
+
+.terminal-topo span:nth-child(3) {
+    background: #30c46b;
+}
+
+.terminal-topo strong {
+    margin-left: 6px;
+    color: #c9d8d0;
+    font-size: 0.85rem;
+}
+
+/* Conteudo interno do painel de bastidores. */
+.terminal-conteudo {
+    display: grid;
+    gap: 14px;
+    padding: 18px;
+    height: calc(100% - 45px);
+    max-height: calc(82vh - 45px);
+    overflow: hidden;
+}
+
+.etiqueta-terminal {
+    background: rgba(167, 243, 208, 0.12);
+    color: #a7f3d0;
+}
+
+.terminal-conteudo h3 {
+    font-size: 1.15rem;
+    color: var(--branco);
+}
+
+/* Lista numerada com o caminho dos dados desde o POST ate o resultado. */
+.fluxo-lista {
+    display: grid;
+    gap: 8px;
+    padding-left: 20px;
+    line-height: 1.45;
+}
+
+.terminal-fluxo {
+    max-height: 160px;
+    overflow: auto;
+    padding-right: 6px;
+}
+
+/* Resumo dos conceitos de POO aplicados no material calculado. */
+.poo-resumo {
+    display: grid;
+    gap: 8px;
+    padding: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    line-height: 1.45;
+}
+
+.terminal-resumo {
+    font-size: 0.92rem;
+}
+
+/* Trecho com aparencia de terminal para mostrar chamadas importantes do PHP. */
+.codigo-execucao {
+    overflow: hidden;
+    height: 150px;
+    padding: 14px;
+    border-radius: 8px;
+    background: #07111f;
+    color: #a7f3d0;
+    font-family: Consolas, 'Courier New', monospace;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    white-space: pre-wrap;
+}
+
+/* Animacao que cria a sensacao de codigo rolando durante a demonstracao. */
+.codigo-rolando code {
+    display: block;
+    animation: rolarCodigo 14s linear infinite;
+}
+
+.codigo-rolando:hover code {
+    animation-play-state: paused;
+}
+
+@keyframes rolarCodigo {
+    0% {
+        transform: translateY(95px);
+    }
+
+    100% {
+        transform: translateY(-75%);
+    }
+}
+
+/* Animacao do texto grande que aparece no resultado. */
+.reciclagem-aura-container {
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reciclagem-aura-text {
+    font-size: clamp(3rem, 14vw, 10rem);
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    color: var(--verde);
+    text-shadow:
+        0 0 18px rgba(244, 197, 66, 0.75),
+        0 0 34px rgba(47, 128, 237, 0.35);
+    animation: reciclagemDance 1.35s ease-in-out infinite;
+    white-space: nowrap;
+}
+
+.reciclagem-aura-container.fade-out {
+    animation: fadeOutAura 1s ease-out forwards;
+}
+
+/* Animacoes usadas pelo texto de resultado. */
+@keyframes reciclagemDance {
+    0% {
+        transform: translateX(-24px) rotate(-4deg) scale(1);
+    }
+
+    25% {
+        transform: translateY(-34px) rotate(4deg) scale(1.12);
+    }
+
+    50% {
+        transform: translateX(34px) rotate(6deg) scale(1.03);
+    }
+
+    75% {
+        transform: translateY(28px) rotate(-5deg) scale(0.96);
+    }
+
+    100% {
+        transform: translateX(-24px) rotate(-4deg) scale(1);
+    }
+}
+
+@keyframes fadeOutAura {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(0.92);
+        visibility: hidden;
+    }
+}
+
+
+/* Abre espaco lateral quando existe a telinha flutuante dos bastidores. */
+@media (min-width: 1180px) {
+    .resultado-pagina {
+        margin-right: 390px;
+    }
+}
+
+/* Ajustes para telas menores. */
+@media (max-width: 760px) {
+    body {
+        align-items: flex-start;
+    }
+
+    .pagina {
+        grid-template-columns: 1fr;
+    }
+
+    .apresentacao,
+    .formulario-area {
+        padding: 28px;
+    }
+
+    .apresentacao p {
+        max-width: none;
+    }
+
+    .linha {
+        grid-template-columns: 1fr;
+    }
+
+    .acoes button,
+    .acoes .link-botao {
+        width: 100%;
+    }
+
+    .professora-wrapper {
+        width: 116px;
+        height: 150px;
+    }
+
+    .professora-sprite {
+        height: 116px;
+    }
+
+    .professora-imagem {
+        width: 96px;
+        height: 96px;
+    }
+}
+/* Em telas menores, a telinha de bastidores deixa de flutuar para nao cobrir o resultado. */
+@media (max-width: 1179px) {
+    body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .resultado-pagina {
+        margin-right: 0;
+    }
+
+    .bastidores-flutuante {
+        position: static;
+        width: min(100%, 940px);
+        max-height: none;
+        margin-top: 18px;
+        transform: none;
+        resize: none;
+    }
+
+    .terminal-conteudo {
+        max-height: none;
+    }
+}
+
+
+
+

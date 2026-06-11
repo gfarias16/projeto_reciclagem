@@ -1,0 +1,271 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Configuracoes basicas da pagina e ligacao com o CSS. -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cooperativa de Reciclagem</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Conteudo principal dividido entre apresentacao e formulario. -->
+    <main class="pagina">
+        <!-- Bloco de apresentacao do sistema. -->
+        <section class="apresentacao">
+            <span class="selo">Sistema escolar</span>
+            <h1>Cooperativa de Reciclagem</h1>
+            <p>
+                Cadastre um material recebido, informe suas caracteristicas e calcule
+                o valor de venda com PHP Orientado a Objetos.
+            </p>
+        </section>
+
+        <!-- Bloco do formulario que envia os dados para o PHP. -->
+        <section class="formulario-area" aria-labelledby="titulo-formulario">
+            <h2 id="titulo-formulario">Cadastro de material</h2>
+            <p class="descricao">
+                Informe a cooperativa e escolha o tipo de material para abrir os campos especificos usados no calculo.
+            </p>
+
+            <!-- Formulario principal: usa POST e envia os dados para o processa.php dentro da pasta backend. -->
+            <form action="../backend/processa.php" method="post" id="form-material">
+                <!-- Campo simples para identificar a cooperativa sem criar uma nova classe. -->
+                <div class="grupo">
+                    <label for="cooperativa">Nome da cooperativa</label>
+                    <input
+                        type="text"
+                        id="cooperativa"
+                        name="cooperativa"
+                        placeholder="Ex.: Coop Verde, Recicla Rio, Eco Bairro"
+                        required
+                    >
+                </div>
+                <!-- Campo para escolher qual classe sera instanciada no PHP. -->
+                <div class="grupo">
+                    <label for="tipo">Tipo de material</label>
+                    <select id="tipo" name="tipo" required>
+                        <option value="">Selecione uma opcao</option>
+                        <option value="papel">Papel</option>
+                        <option value="plastico">Plastico</option>
+                        <option value="metal">Metal</option>
+                    </select>
+                </div>
+
+                <!-- Campo comum para todos os materiais. -->
+                <div class="grupo">
+                    <label for="descricao">Descricao do material</label>
+                    <input
+                        type="text"
+                        id="descricao"
+                        name="descricao"
+                        placeholder="Ex.: caixas de papelao, garrafas PET, latas de aluminio"
+                        required
+                    >
+                </div>
+
+                <!-- Campos numericos comuns: peso e valor por quilo. -->
+                <div class="linha">
+                    <div class="grupo">
+                        <label for="peso">Peso em kg</label>
+                        <input
+                            type="number"
+                            id="peso"
+                            name="peso"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Ex.: 12.50"
+                            required
+                        >
+                    </div>
+
+                    <div class="grupo">
+                        <label for="valor_quilo">Valor por quilo (R$)</label>
+                        <input
+                            type="number"
+                            id="valor_quilo"
+                            name="valor_quilo"
+                            min="0.01"
+                            step="0.01"
+                            placeholder="Ex.: 1.80"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Campos especificos da classe Papel. -->
+                <fieldset id="painel-papel" class="painel-especifico painel-oculto">
+                    <legend>Dados do papel</legend>
+                    <div class="grupo">
+                        <label for="tipo_papel">Qualidade do papel</label>
+                        <select id="tipo_papel" name="tipo_papel">
+                            <option value="">Selecione</option>
+                            <option value="limpo">Limpo (+10%)</option>
+                            <option value="comum">Comum</option>
+                            <option value="umido_misturado">Umido ou misturado (-15%)</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <!-- Campos especificos da classe Plastico. -->
+                <fieldset id="painel-plastico" class="painel-especifico painel-oculto">
+                    <legend>Dados do plastico</legend>
+                    <div class="grupo">
+                        <label for="tipo_plastico">Tipo de plastico</label>
+                        <select id="tipo_plastico" name="tipo_plastico">
+                            <option value="">Selecione</option>
+                            <option value="pet">PET (+20%)</option>
+                            <option value="pead">PEAD (+10%)</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                </fieldset>
+
+                <!-- Campos especificos da classe Metal. -->
+                <fieldset id="painel-metal" class="painel-especifico painel-oculto">
+                    <legend>Dados do metal</legend>
+                    <div class="linha">
+                        <div class="grupo">
+                            <label for="tipo_metal">Tipo de metal</label>
+                            <input
+                                type="text"
+                                id="tipo_metal"
+                                name="tipo_metal"
+                                placeholder="Ex.: aluminio, cobre, ferro"
+                            >
+                        </div>
+
+                        <div class="grupo">
+                            <label for="pureza_percentual">Pureza (%)</label>
+                            <input
+                                type="number"
+                                id="pureza_percentual"
+                                name="pureza_percentual"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                placeholder="Ex.: 85"
+                            >
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Botoes de acao do formulario. -->
+                <div class="acoes">
+                    <button class="botao-principal" type="submit">Calcular valor</button>
+                    <button class="botao-secundario" type="reset">Limpar</button>
+                </div>
+            </form>
+
+        </section>
+    </main>
+    <!-- Imagem real da professora com balao de fala flutuante. -->
+    <div class="professora-wrapper" aria-hidden="true">
+        <div class="professora-speech">Separou certinho?</div>
+        <div class="professora-sprite">
+            <img src="../img/img_luciene.png" alt="" class="professora-imagem">
+        </div>
+    </div>
+
+    <script>
+        // Seleciona os elementos principais usados na interacao.
+        const form = document.getElementById('form-material');
+        const tipoSelect = document.getElementById('tipo');
+        const professora = document.querySelector('.professora-wrapper');
+        const fala = document.querySelector('.professora-speech');
+
+        // Mapa que relaciona cada tipo de material com seu painel especifico.
+        const paineis = {
+            papel: document.getElementById('painel-papel'),
+            plastico: document.getElementById('painel-plastico'),
+            metal: document.getElementById('painel-metal')
+        };
+
+        // Mapa que relaciona cada tipo de material com seus campos obrigatorios.
+        const camposPorTipo = {
+            papel: ['tipo_papel'],
+            plastico: ['tipo_plastico'],
+            metal: ['tipo_metal', 'pureza_percentual']
+        };
+
+        // Mostra somente o painel do tipo escolhido e atualiza os campos obrigatorios.
+        function atualizarPaineis() {
+            const selecionado = tipoSelect.value;
+
+            Object.keys(paineis).forEach(tipo => {
+                const visivel = tipo === selecionado;
+                paineis[tipo].classList.toggle('painel-oculto', !visivel);
+
+                camposPorTipo[tipo].forEach(id => {
+                    const campo = document.getElementById(id);
+                    campo.required = visivel;
+                    if (!visivel) {
+                        campo.value = '';
+                    }
+                });
+            });
+        }
+
+        // Atualiza o texto do balao e aplica destaque quando existe erro.
+        function mostrarFala(texto, alerta = false) {
+            fala.textContent = texto;
+            fala.classList.toggle('speech-alert', alerta);
+            fala.classList.remove('speech-pop');
+            void fala.offsetWidth;
+            fala.classList.add('speech-pop');
+        }
+
+
+        // Move a personagem pela tela para lembrar a interacao do exemplo.
+        function moverProfessora() {
+            const margem = 28;
+            const limiteX = window.innerWidth - professora.offsetWidth - margem;
+            const limiteY = window.innerHeight - professora.offsetHeight - margem;
+
+            if (limiteX <= 0 || limiteY <= 0) {
+                return;
+            }
+
+            const left = Math.random() * limiteX + margem / 2;
+            const top = Math.random() * limiteY + margem / 2;
+            professora.style.transform = `translate(${left}px, ${top}px)`;
+        }
+
+        // Quando o tipo muda, o formulario mostra os campos corretos.
+        tipoSelect.addEventListener('change', () => {
+            atualizarPaineis();
+            mostrarFala('Boa escolha. Agora complete os dados!');
+        });
+
+        // Ao limpar, todos os paineis especificos voltam a ficar escondidos.
+        form.addEventListener('reset', () => {
+            setTimeout(() => {
+                atualizarPaineis();
+                mostrarFala('Formulario limpo, bora reciclar!');
+            }, 0);
+        });
+
+        // Antes de enviar, o navegador verifica se todos os campos obrigatorios foram preenchidos.
+        form.addEventListener('submit', event => {
+            atualizarPaineis();
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                mostrarFala('Preencha tudo antes de enviar!', true);
+            }
+        });
+
+        // Ao carregar a pagina, prepara o formulario e inicia a animacao da personagem.
+        window.addEventListener('load', () => {
+            atualizarPaineis();
+            moverProfessora();
+            setInterval(moverProfessora, 5200);
+            window.addEventListener('resize', moverProfessora);
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
